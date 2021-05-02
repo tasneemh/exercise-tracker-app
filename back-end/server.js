@@ -26,10 +26,18 @@ connection.once('open', ()=>{
   console.log(err);
 });
 
+const exercisesRouter = require("./routes/exerciseRoutes");
+const usersRouter = require("./routes/userRoutes");
 
-app.get("/", (req, res) => {
-  res.send("Hello!");
-});
+//   /exercises route will load everything in exercisesRouter & /users will load everything in usersRouter
+
+app.use("/exercises", exercisesRouter);
+app.use("/users", usersRouter);
+
+// app.get("/", (req, res) => {
+//   res.send("Hello!");
+// });
+
 app.listen(port, () => {
   console.log(`Server app listening on port ${port}!`);
 });
