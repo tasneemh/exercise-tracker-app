@@ -38,4 +38,53 @@ router.route("/add").post((request, response)=>{
   });
 });
 
+router.route("/:id").get((request, response)=>{
+  const id = request.params.id;
+  Exercise.findById(id)
+  .then(exercise=>{
+    console.log("exercise inside /:id",exercise);
+    response.json(exercise)
+  })
+  .catch(error=>{
+    console.log(error);
+    response.status(400).json("Error: "+ error)
+  });
+});
+
+router.route("/:id").delete((request, response)=>{
+  const id = request.params.id;
+  Exercise.findByIdAndDelete(id)
+  .then(()=>{
+    response.json("Exercise deleted!");
+  })
+  .catch(error=>{
+    console.log(error);
+    response.status(400).json("Error: "+ error)
+  });
+});
+
+router.route("/update/:id").post((request, response)=>{
+  const id = request.params.id;
+  Exercise.findById(id)
+  .then(exercise=>{
+    console.log("exercise inside /update/:id", exercise);
+    exercise.username = request.body.username;
+    exercise.description = request.body.description;
+    exercise.duration = Number(request.body.duration);
+    exercise.date = Date.parse(request.body.date);
+
+    exercise.save()
+    .then(()=>{
+      response.json("Exercise updated!")
+    })
+    .catch(error=>{
+      console.log(error);
+      response.status(400).json("Error: "+ error)
+    });   
+  })
+  .catch(error=>{
+    console.log(error);
+  });
+});
+
 module.exports = router;
