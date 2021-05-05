@@ -16,9 +16,9 @@ router.route('/').get((request, response)=>{
 });
 
 router.route('/add').post((request, response)=>{
-  console.log("request.body in/add: ",request.body);
-  const username = request.body.username;
-
+  console.log("request.body.data in/add: ",request.body.data);
+  const username = request.body.data.username;
+  console.log("username: ", username);
   const newUser = new User({username});
 
   newUser.save()
@@ -27,7 +27,7 @@ router.route('/add').post((request, response)=>{
     response.json("New user added!")
   })
   .catch(error =>{
-    console.log(error);
+    console.log("error inside /add:", error);
     response.status(400).json("Error: "+ error)
   });
 });

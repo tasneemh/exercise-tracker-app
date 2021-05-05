@@ -17,11 +17,12 @@ router.route("/").get((request, response)=>{
 
 router.route("/add").post((request, response)=>{
   console.log("request.body in/add: ",request.body);
-  const username = request.body.username;
-  const description = request.body.description;
-  const duration = Number(request.body.duration);
-  const date = Date.parse(request.body.date);
-
+  const username = request.body.data.username;
+  const description = request.body.data.description;
+  const duration = Number(request.body.data.duration);
+  const date = Date.parse(request.body.data.date);
+  console.log("typeof duration: ", typeof duration);
+  console.log("typeof date: ", typeof date);
   const newExercise = new Exercise({username,
   description,
   duration,

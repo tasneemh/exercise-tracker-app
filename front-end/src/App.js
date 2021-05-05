@@ -10,11 +10,16 @@ import {useState} from "react";
 
 function App() {
   const [startDate, setStartDate] = useState(new Date());
+  const [users, setUsers] = useState([]);
+  const [exercises, setExercises] = useState([]);
+  
   return (
     <Router>
       <Navbar />
       <Route exact path="/" >
-        <ExercisesList />
+        <ExercisesList 
+        exercises={exercises}
+        setExercises={setExercises}/>
       </Route>
       <Route exact path="/edit/:id" >
         <EditExercise />
@@ -23,6 +28,8 @@ function App() {
         <CreateExercise 
         startDate={startDate}
         setStartDate={setStartDate}
+        users={users}
+        setUsers={setUsers}
         />
       </Route>
       <Route path="/user">

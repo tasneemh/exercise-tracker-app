@@ -1,18 +1,36 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import { useForm } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useHistory } from "react-router-dom";
-
+import axios from "axios";
 
 function CreateExercise(props) {
-  const {startDate, setStartDate} = props;
+  const {startDate, setStartDate, users, setUsers} = props;
   const { register, handleSubmit } = useForm();
   let history = useHistory();
+  
+  const getAllUsers = () =>{
+    axios.get(`http://localhost:5000/users`).then(response=>{
+      console.log("response: ", response.data);
+      setUsers(response.data);
+    }).catch(error=>{
+      console.log("error: ", error);
+    });
+  };
+  useEffect(() => {
+    getAllUsers();
+  }, []);
+
   const onSubmit = data =>{
     data.date = startDate;
-    console.log(data);
+    console.log("data: ", data);
     history.push("/");
+    axios.post(`http://localhost:5000/exercises/add`, {data}).then(response=>{
+      console.log("response inside axios: ", response);
+    }).catch(error=>{
+      console.log("error: ", error);
+    });
   }; 
   return (
     <div>
@@ -20,21 +38,15 @@ function CreateExercise(props) {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group">
           <label>Username: </label>
-          <input {...register("user")}
-          className="form-control"/>
-          {/** 
-          <select {...register("user")}
+          <select {...register("username")}
           className="form-control"
           >         
           {users.map(user=>
             <option 
-            key={user}
-            value={user}>{user}</option>
+            key={user._id}
+            value={user.username}>{user.username}</option>
             )}
-          </select>
-          
-          */}
-          
+          </select>  
         </div>
         <div className="form-group">
           <label>Description: </label>
