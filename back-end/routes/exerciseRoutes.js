@@ -3,7 +3,6 @@ const router = express.Router();
 let Exercise = require("../models/exercise.model"); //importing mongoose exercise model
 
 
-
 router.route("/add").post((request, response)=>{
   console.log("request.body in/add: ",request.body);
   const username = request.body.data.username;
@@ -67,6 +66,7 @@ router.route("/:id").delete((request, response)=>{
   });
 });
 
+/*
 router.route("/update/:id").post((request, response)=>{
   const id = request.params.id;
   Exercise.findById(id)
@@ -90,5 +90,5 @@ router.route("/update/:id").post((request, response)=>{
     console.log(error);
   });
 });
-
+*/
 module.exports = router;
