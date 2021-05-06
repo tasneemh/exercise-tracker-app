@@ -2,18 +2,7 @@ const express = require('express'); //creating router object
 const router = express.Router();
 let Exercise = require("../models/exercise.model"); //importing mongoose exercise model
 
-router.route("/").get((request, response)=>{
-  //find is mongoose method that gives all the users from mongoDB
-  Exercise.find()
-  .then(exercises=>{
-    console.log("exercises: ", exercises);
-    response.json(exercises)
-  })
-  .catch(error =>{
-    console.log("error: ", error);
-    response.status(400).json("Error: "+error)
-  });
-});
+
 
 router.route("/add").post((request, response)=>{
   console.log("request.body in/add: ",request.body);
@@ -21,8 +10,7 @@ router.route("/add").post((request, response)=>{
   const description = request.body.data.description;
   const duration = Number(request.body.data.duration);
   const date = Date.parse(request.body.data.date);
-  console.log("typeof duration: ", typeof duration);
-  console.log("typeof date: ", typeof date);
+  
   const newExercise = new Exercise({username,
   description,
   duration,
@@ -39,11 +27,24 @@ router.route("/add").post((request, response)=>{
   });
 });
 
+router.route("/").get((request, response)=>{
+  //find is mongoose method that gives all the users from mongoDB
+  Exercise.find()
+  .then(exercises=>{
+    console.log("exercises: ", exercises);
+    response.json(exercises)
+  })
+  .catch(error =>{
+    console.log("error: ", error);
+    response.status(400).json("Error: "+error)
+  });
+});
+
 router.route("/:id").get((request, response)=>{
   const id = request.params.id;
   Exercise.findById(id)
   .then(exercise=>{
-    console.log("exercise inside /:id",exercise);
+    console.log("exercise inside /:id", exercise);
     response.json(exercise)
   })
   .catch(error=>{
@@ -53,6 +54,8 @@ router.route("/:id").get((request, response)=>{
 });
 
 router.route("/:id").delete((request, response)=>{
+  console.log("request: ", request);
+  console.log("request.params: ", request.params);
   const id = request.params.id;
   Exercise.findByIdAndDelete(id)
   .then(()=>{

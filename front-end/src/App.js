@@ -3,7 +3,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import ExercisesList from "./components/ExercisesList";
-import EditExercise from "./components/EditExercise";
 import CreateExercise from "./components/CreateExercise";
 import CreateUser from "./components/CreateUser";
 import {useState} from "react";
@@ -12,6 +11,7 @@ function App() {
   const [startDate, setStartDate] = useState(new Date());
   const [users, setUsers] = useState([]);
   const [exercises, setExercises] = useState([]);
+  const [count, setCount] = useState(0);
   
   return (
     <Router>
@@ -19,10 +19,10 @@ function App() {
       <Route exact path="/" >
         <ExercisesList 
         exercises={exercises}
-        setExercises={setExercises}/>
-      </Route>
-      <Route exact path="/edit/:id" >
-        <EditExercise />
+        setExercises={setExercises} 
+        count={count} 
+        setCount={setCount}
+        />
       </Route>
       <Route path="/create" >
         <CreateExercise 

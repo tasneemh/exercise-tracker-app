@@ -4,24 +4,29 @@ import Exercise from "./Exercise";
 
 function ExercisesList(props) {
   const {exercises, setExercises} = props;
-  const getAllExercises = () =>{
-    axios.get(`http://localhost:5000/exercises`).then(response=>{
-      console.log("response: ",response);
-      setExercises(response.data);
-    }).catch(error=>{
-      console.log("error: ", error);
-    });
-  };
-  const deleteExercise = (id) =>{
-    axios.delete(`http://localhost:5000/exercises/${id}`).then(response=>{
-      console.log("response: ", response);
-    }).catch(error=>{
-      console.log("error: ", error);
-    });
-  };
+  
   useEffect(()=>{
-    getAllExercises();
-  },[]);
+    axios.get(`http://localhost:5000/exercises`).then(response=>{
+      console.log("response inside axios: ",response);   
+      setExercises(response.data);            
+    }).catch(error=>{
+      console.log("error: ", error);
+    });
+  },[setExercises]);
+
+  const deleteExercise = (id) =>{
+    axios.delete("http://localhost:5000/exercises/"+id).then(response=>{
+      console.log("response: ", response);
+      const newExercises = exercises.filter(element=>
+        element._id!==id
+      );
+      console.log(newExercises);
+      setExercises(newExercises);
+    }).catch(error=>{
+      console.log("error: ", error);
+    });
+  };
+
   return (
     <div>
     <h3>Logged Exercises</h3>
@@ -37,13 +42,15 @@ function ExercisesList(props) {
         </thead>
         <tbody>
         {exercises && exercises.map(exercise=>
-        <Exercise key={exercise._id} exercise={exercise}/> 
+        <Exercise key={exercise._id} 
+        exercise={exercise}
+        deleteExercise={deleteExercise}
+        /> 
         )}
         </tbody>        
-      </table>
-      
+      </table>      
     </div>
   )
 }
 
-export default ExercisesList
+export default ExercisesList;
